@@ -17,6 +17,7 @@
 		5DB6854F1C59AF5200C21A40 /* YXChatBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB6854E1C59AF5200C21A40 /* YXChatBox.m */; };
 		5DB685511C59B3BF00C21A40 /* .clang-format in Resources */ = {isa = PBXBuildFile; fileRef = 5DB685501C59B3BF00C21A40 /* .clang-format */; };
 		5DB685531C59FF0B00C21A40 /* YXChatBoxImage.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DB685521C59FF0B00C21A40 /* YXChatBoxImage.xcassets */; };
+		5DC8B6581C5B85B000064968 /* YXMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B6571C5B85B000064968 /* YXMoreView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,8 @@
 		5DB6854E1C59AF5200C21A40 /* YXChatBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YXChatBox.m; sourceTree = "<group>"; };
 		5DB685501C59B3BF00C21A40 /* .clang-format */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".clang-format"; sourceTree = "<group>"; };
 		5DB685521C59FF0B00C21A40 /* YXChatBoxImage.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = YXChatBoxImage.xcassets; sourceTree = "<group>"; };
+		5DC8B6561C5B85B000064968 /* YXMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YXMoreView.h; sourceTree = "<group>"; };
+		5DC8B6571C5B85B000064968 /* YXMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YXMoreView.m; sourceTree = "<group>"; };
 		B1E8F1C20B64DC95FDAA874E /* Pods-YXChatBoxDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YXChatBoxDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YXChatBoxDemo/Pods-YXChatBoxDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		E0BD4B9B30126376C7489A48 /* Pods-YXChatBoxDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YXChatBoxDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-YXChatBoxDemo/Pods-YXChatBoxDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +103,8 @@
 			children = (
 				5DB6854D1C59AF5200C21A40 /* YXChatBox.h */,
 				5DB6854E1C59AF5200C21A40 /* YXChatBox.m */,
+				5DC8B6561C5B85B000064968 /* YXMoreView.h */,
+				5DC8B6571C5B85B000064968 /* YXMoreView.m */,
 				5DB685521C59FF0B00C21A40 /* YXChatBoxImage.xcassets */,
 			);
 			name = YXChatBox;
@@ -232,6 +237,7 @@
 			files = (
 				5DB6854F1C59AF5200C21A40 /* YXChatBox.m in Sources */,
 				5DB6853D1C59AF2B00C21A40 /* ViewController.m in Sources */,
+				5DC8B6581C5B85B000064968 /* YXMoreView.m in Sources */,
 				5DB6853A1C59AF2B00C21A40 /* AppDelegate.m in Sources */,
 				5DB685371C59AF2B00C21A40 /* main.m in Sources */,
 			);

@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "YXChatBox.h"
+#import "YXMoreView.h"
 
 // 3rd
 #import <Masonry/Masonry.h>
@@ -26,6 +27,7 @@ CGFloat kScreenHeight()
 
 @property(nonatomic, strong) YXChatBox *chatBox;
 @property(nonatomic, strong) UIView *emojiView;
+@property(nonatomic, strong) YXMoreView *moreView;
 @property(nonatomic, strong) UIView *layoutHelperView;
 
 @property(nonatomic, assign) CGFloat keyboardH;
@@ -44,25 +46,7 @@ CGFloat kScreenHeight()
     [self.view addSubview:self.chatBox];
     [self.view addSubview:self.layoutHelperView];
     [self.view addSubview:self.emojiView];
-    
-    [self.layoutHelperView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(kScreenWith());
-        make.height.mas_equalTo(0);
-        make.bottom.mas_equalTo(self.view.mas_bottom);
-        make.top.mas_equalTo(self.chatBox.mas_bottom);
-    }];
-    
-    [self.chatBox mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(kScreenWith());
-//        make.height.mas_equalTo(50);
-    }];
-    
-    [self.emojiView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(kScreenWith());
-        make.height.mas_equalTo(120);
-        make.bottom.mas_equalTo(self.view.mas_bottom);
-//        make.top.mas_equalTo(self.chatBox.mas_bottom);
-    }];
+    [self.view addSubview:self.moreView];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     [self.view addGestureRecognizer:tap];
@@ -94,55 +78,84 @@ CGFloat kScreenHeight()
 
 - (void)onTap:(id)sender
 {
-    [self.chatBox.textView resignFirstResponder];
+    [self.chatBox resignFirstResponder];
+    
+    [UIView animateWithDuration:0.25f animations:^{
+        
+        //  reset emojiView
+        CGFloat emojiViewH = 100.0f;
+        self.emojiView.frame = CGRectMake(0, kScreenHeight(), kScreenWith(), emojiViewH);
+        
+        // reset moreView
+        CGFloat moreViewH = 290.0f;
+        self.moreView.frame = CGRectMake(0, kScreenHeight(), kScreenWith(), moreViewH);
+        self.chatBox.frame = CGRectMake(0, kScreenHeight() - self.chatBox.frame.size.height, self.chatBox.frame.size.width, self.chatBox.frame.size.height);
+        
+    } completion:^(BOOL finished) {
+        
+        self.moreView.hidden = YES;
+        self.emojiView.hidden = YES;
+    }];
+    
 }
 
 #pragma mark - keyboard
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    NSDictionary *info = [notification userInfo];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    if (self.chatBox.status == YXChatBoxStatusShowEmojiKeyboard || self.chatBox.status == YXChatBoxStatusShowMoreKeyboard) {
+        return;
+    }
     
-    [self.layoutHelperView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(0);
-    }];
-    
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.layoutHelperView layoutIfNeeded];
-        [self.chatBox layoutIfNeeded];
-    }];
+    self.chatBox.frame = CGRectMake(0, kScreenHeight() - self.chatBox.frame.size.height, self.chatBox.frame.size.width, self.chatBox.frame.size.height);
 }
 
 - (void)keyboardFrameWillChange:(NSNotification *)notification
 {
     NSDictionary *info = [notification userInfo];
     NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGRect keyboardFrame = [kbFrame CGRectValue];
     
     self.keyboardH = keyboardFrame.size.height;
     
-    [self.layoutHelperView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(keyboardFrame.size.height);
-    }];
-    
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.layoutHelperView layoutIfNeeded];
-        [self.chatBox layoutIfNeeded];
-    }];
+    self.chatBox.frame = CGRectMake(0, kScreenHeight() - self.keyboardH - self.chatBox.frame.size.height, self.chatBox.frame.size.width, self.chatBox.frame.size.height);
 }
 
 #pragma mark - YXChatBoxDelegate
 
 - (void)yx_chatBox:(YXChatBox *)chatBox fromStatus:(YXChatBoxStatus)fromStatus toStatus:(YXChatBoxStatus)toStatus
 {
-    if (toStatus == YXChatBoxStatusShowEmojiKeyboard) {
-        [self.chatBox.textView resignFirstResponder];
-        self.emojiView.hidden = YES;
+    //  reset emojiView
+    CGFloat emojiViewH = 100.0f;
+    self.emojiView.frame = CGRectMake(0, kScreenHeight(), kScreenWith(), emojiViewH);
+    self.emojiView.hidden = YES;
+    
+    // reset moreView
+    CGFloat moreViewH = 140.0f;
+    self.moreView.frame = CGRectMake(0, kScreenHeight(), kScreenWith(), moreViewH);
+    self.moreView.hidden = YES;
+    
+    if (fromStatus == YXChatBoxStatusShowKeyboard && toStatus == YXChatBoxStatusNone) {
+        
+        [UIView animateWithDuration:0.25f animations:^{
+            self.chatBox.frame = CGRectMake(0, kScreenHeight() - self.chatBox.frame.size.height, self.chatBox.frame.size.width, self.chatBox.frame.size.height);
+        }];
     }
-    else {
+    else if (toStatus == YXChatBoxStatusShowEmojiKeyboard) {
+        
         self.emojiView.hidden = NO;
+        [UIView animateWithDuration:0.3f animations:^{
+            self.emojiView.frame = CGRectMake(0, kScreenHeight() - emojiViewH, kScreenWith(), emojiViewH);
+            self.chatBox.frame = CGRectMake(0, kScreenHeight() - self.chatBox.frame.size.height - emojiViewH, self.chatBox.frame.size.width, self.chatBox.frame.size.height);
+        }];
+    }
+    else if (toStatus == YXChatBoxStatusShowMoreKeyboard) {
+        
+        self.moreView.hidden = NO;
+        [UIView animateWithDuration:0.3f animations:^{
+            self.moreView.frame = CGRectMake(0, kScreenHeight() - moreViewH, kScreenWith(), moreViewH);
+            self.chatBox.frame = CGRectMake(0, kScreenHeight() - self.chatBox.frame.size.height - moreViewH, self.chatBox.frame.size.width, self.chatBox.frame.size.height);
+        }];
     }
 }
 
@@ -151,7 +164,7 @@ CGFloat kScreenHeight()
 - (YXChatBox *)chatBox
 {
     if (!_chatBox) {
-        _chatBox = [[YXChatBox alloc] init];
+        _chatBox = [[YXChatBox alloc] initWithFrame:CGRectMake(0, kScreenHeight() - 50.0f, kScreenWith(), 50.0f)];
         _chatBox.delegate = self;
         _chatBox.layer.borderWidth = 1;
         _chatBox.layer.borderColor = [UIColor redColor].CGColor;
@@ -168,12 +181,20 @@ CGFloat kScreenHeight()
     return _emojiView;
 }
 
+- (YXMoreView *)moreView
+{
+    if (!_moreView) {
+        _moreView = [[YXMoreView alloc] init];
+    }
+    return _moreView;
+}
+
 - (UIView *)layoutHelperView
 {
     if (!_layoutHelperView) {
         _layoutHelperView = [[UIView alloc] init];
         
-//        _layoutHelperView.backgroundColor = [UIColor orangeColor];
+        _layoutHelperView.backgroundColor = [UIColor orangeColor];
     }
     return _layoutHelperView;
 }
