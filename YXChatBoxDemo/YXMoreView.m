@@ -6,12 +6,16 @@
 //  Copyright © 2016年 iamjiyixuan. All rights reserved.
 //
 
+#import "YXMoreItemCell.h"
 #import "YXMoreView.h"
 
 // 3rd
 #import <Masonry/Masonry.h>
+#import <HexColors/HexColors.h>
 
 @interface YXMoreView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+
+@property(nonatomic, strong) NSArray<YXMoreItem *> *itmes;
 
 @property(nonatomic, strong) UICollectionView *collectionView;
 
@@ -37,10 +41,13 @@
 
 - (void)commonInit
 {
-    [self addSubview:self.collectionView];
+    self.backgroundColor = [UIColor hx_colorWithHexString:@"#f4f6f3"];
     
+    [self addSubview:self.collectionView];
+
     [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(self).with.insets(UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f));
+//        make.edges.mas_equalTo(self).with.insets(UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f));
+        make.edges.mas_equalTo(self).with.insets(UIEdgeInsetsZero);
     }];
 }
 
@@ -48,34 +55,48 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 3;
+    return self.itmes.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = NSStringFromClass([UICollectionViewCell class]);
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor orangeColor];
+    NSString *identifier = NSStringFromClass([YXMoreItemCell class]);
+    YXMoreItemCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    cell.item = [self.itmes objectAtIndex:indexPath.row];
+    
+//    cell.layer.borderWidth = 1;
+//    cell.layer.borderColor = [UIColor blueColor].CGColor;
+    
     return cell;
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat wh = ([UIScreen mainScreen].bounds.size.width - 10.0f * 5) / 3;
-    
-    return CGSizeMake(wh, wh);
+    CGFloat w = ([UIScreen mainScreen].bounds.size.width) / 3;
+
+    return CGSizeMake(w, self.frame.size.height);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 10.0f;
+    return 0.0f;
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 10.0f;
+    return 0.0f;
+}
+
+- (NSArray<YXMoreItem *> *)itmes
+{
+    if (!_itmes) {
+        _itmes = @[ [YXMoreItem itemWithIconImageName:@"IconAlbum" title:@"照片"],
+                    [YXMoreItem itemWithIconImageName:@"IconPhoto" title:@"拍照"],
+                    [YXMoreItem itemWithIconImageName:@"IconLocation" title:@"位置"] ];
+    }
+    return _itmes;
 }
 
 - (UICollectionView *)collectionView
@@ -86,9 +107,9 @@
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
-        _collectionView.layer.borderColor = [UIColor redColor].CGColor;
-        _collectionView.layer.borderWidth = 2;
-        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([UICollectionViewCell class])];
+//        _collectionView.layer.borderColor = [UIColor redColor].CGColor;
+//        _collectionView.layer.borderWidth = 2;
+        [_collectionView registerClass:[YXMoreItemCell class] forCellWithReuseIdentifier:NSStringFromClass([YXMoreItemCell class])];
     }
     return _collectionView;
 }

@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>HexColors.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Masonry.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>01AF7E080A56E7C7ABF059403996F67E</key>
+		<key>59E6C65DCB31C6F0A0B22B8FF41898B3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>476FDC652A9D64081C63DB3917CF671F</key>
+		<key>649C9EDB86244716A8FF9BEC41EEEBD1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>706001CAF9A4738F77732415D8DADB68</key>
 		<dict>
 			<key>primary</key>
 			<true/>

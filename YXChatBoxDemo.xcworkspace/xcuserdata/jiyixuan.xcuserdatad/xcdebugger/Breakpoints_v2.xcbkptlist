@@ -10,60 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "YXChatBoxDemo/YXChatBox.m"
-            timestampString = "475760953.051027"
+            timestampString = "475830429.882935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
-            landmarkName = "-relayoutTextView"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[YXChatBox resetTextView]"
-                  moduleName = "YXChatBoxDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jiyixuan/git/JYX/YXChatBoxDemo/YXChatBoxDemo/YXChatBox.m"
-                  timestampString = "475733375.604969"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "128"
-                  endingLineNumber = "128"
-                  offsetFromSymbolStart = "292">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__26-[YXChatBox resetTextView]_block_invoke"
-                  moduleName = "YXChatBoxDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jiyixuan/git/JYX/YXChatBoxDemo/YXChatBoxDemo/YXChatBox.m"
-                  timestampString = "475733375.605099"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "128"
-                  endingLineNumber = "128"
-                  offsetFromSymbolStart = "48">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YXChatBoxDemo/ViewController.m"
-            timestampString = "475760953.051027"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "-keyboardFrameWillChange:"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
+            landmarkName = "-onSwitchButtonTouchUpInside:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "YXChatBoxDemo/YXChatBox.m"
-            timestampString = "475760953.051027"
+            timestampString = "475830431.401808"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "-onEmojiButtonTouchUpInside:"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
+            landmarkName = "-onSwitchButtonTouchUpInside:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -90,44 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "YXChatBoxDemo/YXChatBox.m"
-            timestampString = "475760953.051027"
+            timestampString = "475830917.439257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "-onEmojiButtonTouchUpInside:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YXChatBoxDemo/YXChatBox.m"
-            timestampString = "475760953.051027"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
-            landmarkName = "-resetEmojiButton"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YXChatBoxDemo/ViewController.m"
-            timestampString = "475760953.051027"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "-onTap:"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "-onSwitchButtonTouchUpInside:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

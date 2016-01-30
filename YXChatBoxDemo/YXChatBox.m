@@ -16,6 +16,9 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 
 @interface YXChatBox () <UITextViewDelegate>
 
+@property(nonatomic, assign) BOOL isImportant;
+@property(nonatomic, copy) NSString *textViewText;
+
 @end
 
 @implementation YXChatBox
@@ -50,30 +53,42 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
     [self addSubview:self.textView];
     [self addSubview:self.emojiButton];
     [self addSubview:self.moreButton];
+    [self addSubview:self.switchButton];
+    [self addSubview:self.recordButton];
 
+    CGFloat textViewHeight = [self.textView sizeThatFits:self.textView.frame.size].height;
     // layout subview
     [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
 
-        CGFloat textViewHeight = [self.textView sizeThatFits:self.textView.frame.size].height;
 
-        make.left.mas_equalTo(self.mas_left).offset(kYXChatBoxTextViewPadding);
+//        make.left.mas_equalTo(self.mas_left).offset(kYXChatBoxTextViewPadding);
         make.top.mas_equalTo(self.mas_top).offset(kYXChatBoxTextViewPadding);
         make.bottom.mas_equalTo(self.mas_bottom).offset(-kYXChatBoxTextViewPadding);
-//        make.height.mas_equalTo(ceilf(textViewHeight));
-        make.height.mas_equalTo(textViewHeight);
+        make.height.mas_equalTo(ceilf(textViewHeight));
     }];
 
     [self.emojiButton mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(35.0f, 35.0f));
+        make.size.mas_equalTo(CGSizeMake(25.0f, 25.0f));
         make.left.mas_equalTo(self.textView.mas_right).offset(kYXChatBoxTextViewPadding / 2);
         make.bottom.mas_equalTo(self.textView.mas_bottom);
     }];
 
     [self.moreButton mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(35.0f, 35.0f));
-        make.left.mas_equalTo(self.emojiButton.mas_right); //.offset(kYXChatBoxTextViewPadding / 2);
+        make.size.mas_equalTo(CGSizeMake(25.0f, 25.0f));
+        make.left.mas_equalTo(self.emojiButton.mas_right).offset(kYXChatBoxTextViewPadding / 2);
         make.right.mas_equalTo(self.mas_right).offset(-kYXChatBoxTextViewPadding / 2);
         make.bottom.mas_equalTo(self.textView.mas_bottom);
+    }];
+    
+    [self.switchButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(25.0f, 25.0f));
+        make.left.mas_equalTo(self.mas_left).offset(kYXChatBoxTextViewPadding / 2);
+        make.right.mas_equalTo(self.textView.mas_left).offset(-kYXChatBoxTextViewPadding / 2);
+        make.bottom.mas_equalTo(self.textView.mas_bottom);
+    }];
+    
+    [self.recordButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(self.textView).with.insets(UIEdgeInsetsZero);
     }];
 }
 
@@ -87,6 +102,10 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
     else if (self.status == YXChatBoxStatusShowMoreKeyboard) {
         [self resetMoreButton];
     }
+    
+    self.status = YXChatBoxStatusNone;
+    self.isImportant = NO;
+    self.textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     return [super resignFirstResponder];
 }
@@ -123,6 +142,7 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    self.textViewText = self.textView.text;
     [self relayoutTextView];
 }
 
@@ -139,21 +159,24 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 - (void)onEmojiButtonTouchUpInside:(UIButton *)sender
 {
     [self resetMoreButton];
+    [self resetRecordButton];
 
     YXChatBoxStatus lastStatus = self.status;
     if (lastStatus == YXChatBoxStatusShowEmojiKeyboard) { // 正在显示表情，改为显示系统键盘
 
+        // 表情 -> 系统键盘
         self.status = YXChatBoxStatusShowKeyboard;
 
-        [self.emojiButton setImage:[UIImage imageNamed:@"ToolViewEmotion"] forState:UIControlStateNormal];
+        [self.emojiButton setBackgroundImage:[UIImage imageNamed:@"ToolViewEmotion"] forState:UIControlStateNormal];
 
         [self.textView becomeFirstResponder];
     }
     else {
 
+        //  -> 表情
         self.status = YXChatBoxStatusShowEmojiKeyboard;
 
-        [self.emojiButton setImage:[UIImage imageNamed:@"ToolViewKeyboard"] forState:UIControlStateNormal];
+        [self.emojiButton setBackgroundImage:[UIImage imageNamed:@"ToolViewKeyboard"] forState:UIControlStateNormal];
 
         [self.textView resignFirstResponder];
     }
@@ -166,13 +189,14 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 - (void)onMoreButtonTouchUpInside:(UIButton *)sender
 {
     [self resetEmojiButton];
+    [self resetRecordButton];
 
     YXChatBoxStatus lastStatus = self.status;
     if (lastStatus == YXChatBoxStatusShowMoreKeyboard) {
 
         self.status = YXChatBoxStatusShowKeyboard;
 
-        [self.moreButton setImage:[UIImage imageNamed:@"TypeSelectorBtn_Black"] forState:UIControlStateNormal];
+        [self.moreButton setBackgroundImage:[UIImage imageNamed:@"TypeSelectorBtn_Black"] forState:UIControlStateNormal];
 
         [self.textView becomeFirstResponder];
     }
@@ -180,8 +204,59 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 
         self.status = YXChatBoxStatusShowMoreKeyboard;
 
-        [self.moreButton setImage:[UIImage imageNamed:@"ToolViewKeyboard"] forState:UIControlStateNormal];
+        [self.moreButton setBackgroundImage:[UIImage imageNamed:@"ToolViewKeyboard"] forState:UIControlStateNormal];
 
+        [self.textView resignFirstResponder];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(yx_chatBox:fromStatus:toStatus:)]) {
+        [self.delegate yx_chatBox:self fromStatus:lastStatus toStatus:self.status];
+    }
+}
+
+- (void)onSwitchButtonTouchUpInside:(UIButton *)sender
+{
+    YXChatBoxStatus lastStatus = self.status;
+    
+    if (lastStatus == YXChatBoxStatusVoice) {
+        
+        self.recordButton.hidden = YES;
+        
+        self.status = YXChatBoxStatusShowKeyboard;
+        
+        [self.textView becomeFirstResponder];
+        
+        self.isImportant = YES;
+        self.textView.layer.borderColor = [UIColor redColor].CGColor;
+        
+        self.textView.text = self.textViewText;
+        [self relayoutTextView];
+    }
+    else if (self.isImportant) { // 重 -> 初
+        
+        self.recordButton.hidden = YES;
+        
+        self.status = YXChatBoxStatusShowKeyboard;
+        
+        [self.textView becomeFirstResponder];
+        
+        self.isImportant = NO;
+        self.textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        
+        self.textView.text = self.textViewText;
+        [self relayoutTextView];
+    }
+    else { // 初 -> 语
+        
+        self.textView.text = @" ";
+        [self relayoutTextView];
+        
+        [self resetEmojiButton];
+        [self resetMoreButton];
+        self.recordButton.hidden = NO;
+        
+        self.status = YXChatBoxStatusVoice;
+        
         [self.textView resignFirstResponder];
     }
     
@@ -192,22 +267,27 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 
 #pragma mark - Private
 
+- (void)resetRecordButton
+{
+    self.recordButton.hidden = YES;
+}
+
 - (void)resetEmojiButton
 {
-    [self.emojiButton setImage:[UIImage imageNamed:@"ToolViewEmotion"] forState:UIControlStateNormal];
+    [self.emojiButton setBackgroundImage:[UIImage imageNamed:@"ToolViewEmotion"] forState:UIControlStateNormal];
 }
 
 - (void)resetMoreButton
 {
-    [self.moreButton setImage:[UIImage imageNamed:@"TypeSelectorBtn_Black"] forState:UIControlStateNormal];
+    [self.moreButton setBackgroundImage:[UIImage imageNamed:@"TypeSelectorBtn_Black"] forState:UIControlStateNormal];
 }
 
 - (void)relayoutTextView
 {
     CGFloat height = MIN([self.textView sizeThatFits:self.textView.frame.size].height, 15.0f * 5); // 最多显示5行
     [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.height.mas_equalTo(ceilf(height));
-        make.height.mas_equalTo(height);
+        make.height.mas_equalTo(ceilf(height));
+//        make.height.mas_equalTo(height);
     }];
 
     [self.textView layoutIfNeeded];
@@ -223,7 +303,7 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
         _textView.returnKeyType = UIReturnKeySend;
         _textView.scrollsToTop = NO;
         _textView.clipsToBounds = YES;
-        _textView.font = [UIFont systemFontOfSize:18];
+        _textView.font = [UIFont systemFontOfSize:16];
         _textView.textColor = [UIColor darkTextColor];
         _textView.layer.cornerRadius = 1.5f;
         _textView.layer.borderWidth = 0.5f;
@@ -236,7 +316,7 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 {
     if (!_emojiButton) {
         _emojiButton = [[UIButton alloc] init];
-        [_emojiButton setImage:[UIImage imageNamed:@"ToolViewEmotion"] forState:UIControlStateNormal];
+        [_emojiButton setBackgroundImage:[UIImage imageNamed:@"ToolViewEmotion"] forState:UIControlStateNormal];
         [_emojiButton addTarget:self action:@selector(onEmojiButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _emojiButton;
@@ -246,10 +326,37 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 {
     if (!_moreButton) {
         _moreButton = [[UIButton alloc] init];
-        [_moreButton setImage:[UIImage imageNamed:@"TypeSelectorBtn_Black"] forState:UIControlStateNormal];
+        [_moreButton setBackgroundImage:[UIImage imageNamed:@"TypeSelectorBtn_Black"] forState:UIControlStateNormal];
         [_moreButton addTarget:self action:@selector(onMoreButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _moreButton;
+}
+
+- (UIButton *)switchButton
+{
+    if (!_switchButton) {
+        _switchButton = [[UIButton alloc] init];
+        [_switchButton setBackgroundImage:[UIImage imageNamed:@"IconBtnSwitch"] forState:UIControlStateNormal];
+        [_switchButton addTarget:self action:@selector(onSwitchButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _switchButton;
+}
+
+- (UIButton *)recordButton
+{
+    if (!_recordButton) {
+        _recordButton = [[UIButton alloc] init];
+        _recordButton.backgroundColor = [UIColor whiteColor];
+        [_recordButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        [_recordButton setTitle:@"按住 说话" forState:UIControlStateNormal];
+        [_recordButton setTitle:@"松开 结束" forState:UIControlStateHighlighted];
+        _recordButton.layer.cornerRadius = 1.5f;
+        _recordButton.layer.borderWidth = 0.5f;
+        _recordButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        
+        _recordButton.hidden = YES;
+    }
+    return _recordButton;
 }
 
 @end

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A57EACFE15C1BBB4678844B0"
+               BlueprintIdentifier = "566F6AEEFD798D5D5447F2B1"
                BuildableName = "libPods-YXChatBoxDemo.a"
                BlueprintName = "Pods-YXChatBoxDemo"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -13,7 +13,8 @@ typedef NS_ENUM(NSInteger, YXChatBoxStatus) {
     YXChatBoxStatusNone,
     YXChatBoxStatusShowKeyboard, // 显示系统键盘
     YXChatBoxStatusShowEmojiKeyboard, // 显示表情键盘
-    YXChatBoxStatusShowMoreKeyboard // 显示附件键盘
+    YXChatBoxStatusShowMoreKeyboard, // 显示附件键盘
+    YXChatBoxStatusVoice
     
 //    TLChatBoxStatusNothing,
 //    TLChatBoxStatusShowVoice,
@@ -39,5 +40,7 @@ typedef NS_ENUM(NSInteger, YXChatBoxStatus) {
 @property(nonatomic, strong) UITextView *textView;
 @property(nonatomic, strong) UIButton *emojiButton;
 @property(nonatomic, strong) UIButton *moreButton;
+@property(nonatomic, strong) UIButton *switchButton;
+@property(nonatomic, strong) UIButton *recordButton;
 
 @end

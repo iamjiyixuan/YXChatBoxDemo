@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5AE5FA7FB3C2B3628DCBBB7D /* libPods-YXChatBoxDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB724D8C5147C6F1E278530 /* libPods-YXChatBoxDemo.a */; };
+		5D99BFD21C5C476D008AFD87 /* YXMoreItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99BFD11C5C476D008AFD87 /* YXMoreItemCell.m */; };
+		5D99BFD51C5C4836008AFD87 /* YXMoreItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99BFD41C5C4836008AFD87 /* YXMoreItem.m */; };
+		5D99BFD81C5C617C008AFD87 /* YXEmojiView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D99BFD71C5C617C008AFD87 /* YXEmojiView.m */; };
 		5DB685371C59AF2B00C21A40 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB685361C59AF2B00C21A40 /* main.m */; };
 		5DB6853A1C59AF2B00C21A40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB685391C59AF2B00C21A40 /* AppDelegate.m */; };
 		5DB6853D1C59AF2B00C21A40 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB6853C1C59AF2B00C21A40 /* ViewController.m */; };
@@ -22,6 +25,12 @@
 
 /* Begin PBXFileReference section */
 		3EB724D8C5147C6F1E278530 /* libPods-YXChatBoxDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YXChatBoxDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D99BFD01C5C476D008AFD87 /* YXMoreItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YXMoreItemCell.h; sourceTree = "<group>"; };
+		5D99BFD11C5C476D008AFD87 /* YXMoreItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YXMoreItemCell.m; sourceTree = "<group>"; };
+		5D99BFD31C5C4836008AFD87 /* YXMoreItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YXMoreItem.h; sourceTree = "<group>"; };
+		5D99BFD41C5C4836008AFD87 /* YXMoreItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YXMoreItem.m; sourceTree = "<group>"; };
+		5D99BFD61C5C617C008AFD87 /* YXEmojiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YXEmojiView.h; sourceTree = "<group>"; };
+		5D99BFD71C5C617C008AFD87 /* YXEmojiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YXEmojiView.m; sourceTree = "<group>"; };
 		5DB685321C59AF2B00C21A40 /* YXChatBoxDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YXChatBoxDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DB685361C59AF2B00C21A40 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5DB685381C59AF2B00C21A40 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -105,6 +114,12 @@
 				5DB6854E1C59AF5200C21A40 /* YXChatBox.m */,
 				5DC8B6561C5B85B000064968 /* YXMoreView.h */,
 				5DC8B6571C5B85B000064968 /* YXMoreView.m */,
+				5D99BFD31C5C4836008AFD87 /* YXMoreItem.h */,
+				5D99BFD41C5C4836008AFD87 /* YXMoreItem.m */,
+				5D99BFD01C5C476D008AFD87 /* YXMoreItemCell.h */,
+				5D99BFD11C5C476D008AFD87 /* YXMoreItemCell.m */,
+				5D99BFD61C5C617C008AFD87 /* YXEmojiView.h */,
+				5D99BFD71C5C617C008AFD87 /* YXEmojiView.m */,
 				5DB685521C59FF0B00C21A40 /* YXChatBoxImage.xcassets */,
 			);
 			name = YXChatBox;
@@ -235,8 +250,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D99BFD81C5C617C008AFD87 /* YXEmojiView.m in Sources */,
+				5D99BFD21C5C476D008AFD87 /* YXMoreItemCell.m in Sources */,
 				5DB6854F1C59AF5200C21A40 /* YXChatBox.m in Sources */,
 				5DB6853D1C59AF2B00C21A40 /* ViewController.m in Sources */,
+				5D99BFD51C5C4836008AFD87 /* YXMoreItem.m in Sources */,
 				5DC8B6581C5B85B000064968 /* YXMoreView.m in Sources */,
 				5DB6853A1C59AF2B00C21A40 /* AppDelegate.m in Sources */,
 				5DB685371C59AF2B00C21A40 /* main.m in Sources */,

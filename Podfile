@@ -3,5 +3,6 @@
 
 target 'YXChatBoxDemo' do
     pod 'Masonry', '~> 0.6.3'
+    pod 'HexColors', '~> 3.0.0'
 end
 
