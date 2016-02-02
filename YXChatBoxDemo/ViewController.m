@@ -9,9 +9,13 @@
 #import "ViewController.h"
 #import "YXChatBox.h"
 #import "YXMoreView.h"
+#import "YXEmojiView.h"
 
 // 3rd
 #import <Masonry/Masonry.h>
+#import <HexColors/HexColors.h>
+
+static CGFloat kEmojiViewH = 217.0f;
 
 CGFloat kScreenWith()
 {
@@ -26,9 +30,11 @@ CGFloat kScreenHeight()
 @interface ViewController () <YXChatBoxDelegate>
 
 @property(nonatomic, strong) YXChatBox *chatBox;
-@property(nonatomic, strong) UIView *emojiView;
+@property(nonatomic, strong) YXEmojiView *emojiView;
 @property(nonatomic, strong) YXMoreView *moreView;
 @property(nonatomic, strong) UIView *layoutHelperView;
+
+@property(nonatomic, strong) UIButton *testButton;
 
 @end
 
@@ -44,6 +50,8 @@ CGFloat kScreenHeight()
     [self.view addSubview:self.layoutHelperView];
     [self.view addSubview:self.emojiView];
     [self.view addSubview:self.moreView];
+    
+//    [self.view addSubview:self.testButton];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     [self.view addGestureRecognizer:tap];
@@ -91,7 +99,7 @@ CGFloat kScreenHeight()
     [UIView animateWithDuration:0.25f animations:^{
         
         //  reset emojiView
-        CGFloat emojiViewH = 100.0f;
+        CGFloat emojiViewH = kEmojiViewH;
         self.emojiView.frame = CGRectMake(0, kScreenHeight(), kScreenWith(), emojiViewH);
         
         // reset moreView
@@ -143,8 +151,7 @@ CGFloat kScreenHeight()
 - (void)yx_chatBox:(YXChatBox *)chatBox fromStatus:(YXChatBoxStatus)fromStatus toStatus:(YXChatBoxStatus)toStatus
 {
     //  reset emojiView
-    CGFloat emojiViewH = 100.0f;
-    self.emojiView.frame = CGRectMake(0, kScreenHeight(), kScreenWith(), emojiViewH);
+    self.emojiView.frame = CGRectMake(0, kScreenHeight(), kScreenWith(), kEmojiViewH);
     self.emojiView.hidden = YES;
     
     // reset moreView
@@ -166,10 +173,10 @@ CGFloat kScreenHeight()
         self.emojiView.hidden = NO;
         [UIView animateWithDuration:0.3f animations:^{
             
-            self.emojiView.frame = CGRectMake(0, kScreenHeight() - emojiViewH, kScreenWith(), emojiViewH);
+            self.emojiView.frame = CGRectMake(0, kScreenHeight() - kEmojiViewH, kScreenWith(), kEmojiViewH);
             
             [self.chatBox mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.bottom.mas_equalTo(self.view.mas_bottom).offset(-emojiViewH);
+                make.bottom.mas_equalTo(self.view.mas_bottom).offset(-kEmojiViewH);
             }];
             [self.chatBox layoutIfNeeded];
         }];
@@ -198,6 +205,17 @@ CGFloat kScreenHeight()
     }
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    CGRect f = self.emojiView.frame;
+    
+    if (f.size.width) {
+        
+    }
+}
+
 #pragma mark - Getters & Setters
 
 - (YXChatBox *)chatBox
@@ -205,17 +223,19 @@ CGFloat kScreenHeight()
     if (!_chatBox) {
         _chatBox = [[YXChatBox alloc] initWithFrame:CGRectMake(0, kScreenHeight() - 50.0f, kScreenWith(), 50.0f)];
         _chatBox.delegate = self;
-        _chatBox.layer.borderWidth = 1;
-        _chatBox.layer.borderColor = [UIColor redColor].CGColor;
+//        _chatBox.layer.borderWidth = 1;
+//        _chatBox.layer.borderColor = [UIColor redColor].CGColor;
+        
+        _chatBox.backgroundColor = [UIColor hx_colorWithHexString:@"#f4f6f3"];
     }
     return _chatBox;
 }
 
-- (UIView *)emojiView
+- (YXEmojiView *)emojiView
 {
     if (!_emojiView) {
-        _emojiView = [[UIView alloc] init];
-        _emojiView.backgroundColor = [UIColor orangeColor];
+        _emojiView = [[YXEmojiView alloc] init];
+//        _emojiView.backgroundColor = [UIColor orangeColor];
     }
     return _emojiView;
 }
@@ -236,6 +256,82 @@ CGFloat kScreenHeight()
         _layoutHelperView.backgroundColor = [UIColor orangeColor];
     }
     return _layoutHelperView;
+}
+
+- (UIButton *)testButton
+{
+    if (!_testButton) {
+        _testButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 160, 90)];
+        [_testButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [_testButton setTitle:@"Test" forState:UIControlStateNormal];
+        
+        _testButton.layer.borderWidth = 1;
+        _testButton.layer.borderColor = [UIColor darkGrayColor].CGColor;
+        
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchDownRepeat:) forControlEvents:UIControlEventTouchDownRepeat];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchDragInside:) forControlEvents:UIControlEventTouchDragInside];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchDragOutside:) forControlEvents:UIControlEventTouchDragOutside];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchDragExit:) forControlEvents:UIControlEventTouchDragExit];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
+        [_testButton addTarget:self action:@selector(onRecordButtonTouchCancel:) forControlEvents:UIControlEventTouchCancel];
+        
+        NSLog(@"frame = %@", NSStringFromCGRect(self.testButton.frame));
+        NSLog(@"bounds = %@", NSStringFromCGRect(self.testButton.bounds));
+    }
+    return _testButton;
+}
+
+- (void)onRecordButtonTouchDown:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDownRepeat:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragInside:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragOutside:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragEnter:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragExit:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchUpInside:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchUpOutside:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchCancel:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 @end

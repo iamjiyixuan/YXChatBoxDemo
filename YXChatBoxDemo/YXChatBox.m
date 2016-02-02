@@ -8,7 +8,6 @@
 
 #import "YXChatBox.h"
 
-
 // 3rd
 #import <Masonry/Masonry.h>
 
@@ -60,8 +59,7 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
     // layout subview
     [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
 
-
-//        make.left.mas_equalTo(self.mas_left).offset(kYXChatBoxTextViewPadding);
+        //        make.left.mas_equalTo(self.mas_left).offset(kYXChatBoxTextViewPadding);
         make.top.mas_equalTo(self.mas_top).offset(kYXChatBoxTextViewPadding);
         make.bottom.mas_equalTo(self.mas_bottom).offset(-kYXChatBoxTextViewPadding);
         make.height.mas_equalTo(ceilf(textViewHeight));
@@ -79,14 +77,14 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
         make.right.mas_equalTo(self.mas_right).offset(-kYXChatBoxTextViewPadding / 2);
         make.bottom.mas_equalTo(self.textView.mas_bottom);
     }];
-    
+
     [self.switchButton mas_updateConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(25.0f, 25.0f));
         make.left.mas_equalTo(self.mas_left).offset(kYXChatBoxTextViewPadding / 2);
         make.right.mas_equalTo(self.textView.mas_left).offset(-kYXChatBoxTextViewPadding / 2);
         make.bottom.mas_equalTo(self.textView.mas_bottom);
     }];
-    
+
     [self.recordButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(self.textView).with.insets(UIEdgeInsetsZero);
     }];
@@ -95,18 +93,18 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 - (BOOL)resignFirstResponder
 {
     [self.textView resignFirstResponder];
-    
+
     if (self.status == YXChatBoxStatusShowEmojiKeyboard) {
         [self resetEmojiButton];
     }
     else if (self.status == YXChatBoxStatusShowMoreKeyboard) {
         [self resetMoreButton];
     }
-    
+
     self.status = YXChatBoxStatusNone;
     self.isImportant = NO;
     self.textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    
+
     return [super resignFirstResponder];
 }
 
@@ -116,10 +114,10 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 {
     YXChatBoxStatus lastStatus = self.status;
     self.status = YXChatBoxStatusShowKeyboard;
-    
+
     [self resetEmojiButton];
     [self resetMoreButton];
-    
+
     if ([self.delegate respondsToSelector:@selector(yx_chatBox:fromStatus:toStatus:)]) {
         [self.delegate yx_chatBox:self fromStatus:lastStatus toStatus:self.status];
     }
@@ -127,17 +125,17 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-//    YXChatBoxStatus lastStatus = self.status;
-//    if (lastStatus == YXChatBoxStatusShowKeyboard) {
-//        self.status = YXChatBoxStatusNone;
-//    }
-//    
-//    [self resetEmojiButton];
-//    [self resetMoreButton];
-//    
-//    if ([self.delegate respondsToSelector:@selector(yx_chatBox:fromStatus:toStatus:)]) {
-//        [self.delegate yx_chatBox:self fromStatus:lastStatus toStatus:self.status];
-//    }
+    //    YXChatBoxStatus lastStatus = self.status;
+    //    if (lastStatus == YXChatBoxStatusShowKeyboard) {
+    //        self.status = YXChatBoxStatusNone;
+    //    }
+    //
+    //    [self resetEmojiButton];
+    //    [self resetMoreButton];
+    //
+    //    if ([self.delegate respondsToSelector:@selector(yx_chatBox:fromStatus:toStatus:)]) {
+    //        [self.delegate yx_chatBox:self fromStatus:lastStatus toStatus:self.status];
+    //    }
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -208,7 +206,7 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 
         [self.textView resignFirstResponder];
     }
-    
+
     if ([self.delegate respondsToSelector:@selector(yx_chatBox:fromStatus:toStatus:)]) {
         [self.delegate yx_chatBox:self fromStatus:lastStatus toStatus:self.status];
     }
@@ -217,49 +215,49 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
 - (void)onSwitchButtonTouchUpInside:(UIButton *)sender
 {
     YXChatBoxStatus lastStatus = self.status;
-    
+
     if (lastStatus == YXChatBoxStatusVoice) {
-        
+
         self.recordButton.hidden = YES;
-        
+
         self.status = YXChatBoxStatusShowKeyboard;
-        
+
         [self.textView becomeFirstResponder];
-        
+
         self.isImportant = YES;
         self.textView.layer.borderColor = [UIColor redColor].CGColor;
-        
+
         self.textView.text = self.textViewText;
         [self relayoutTextView];
     }
     else if (self.isImportant) { // 重 -> 初
-        
+
         self.recordButton.hidden = YES;
-        
+
         self.status = YXChatBoxStatusShowKeyboard;
-        
+
         [self.textView becomeFirstResponder];
-        
+
         self.isImportant = NO;
         self.textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        
+
         self.textView.text = self.textViewText;
         [self relayoutTextView];
     }
     else { // 初 -> 语
-        
+
         self.textView.text = @" ";
         [self relayoutTextView];
-        
+
         [self resetEmojiButton];
         [self resetMoreButton];
         self.recordButton.hidden = NO;
-        
+
         self.status = YXChatBoxStatusVoice;
-        
+
         [self.textView resignFirstResponder];
     }
-    
+
     if ([self.delegate respondsToSelector:@selector(yx_chatBox:fromStatus:toStatus:)]) {
         [self.delegate yx_chatBox:self fromStatus:lastStatus toStatus:self.status];
     }
@@ -287,7 +285,7 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
     CGFloat height = MIN([self.textView sizeThatFits:self.textView.frame.size].height, 15.0f * 5); // 最多显示5行
     [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(ceilf(height));
-//        make.height.mas_equalTo(height);
+        //        make.height.mas_equalTo(height);
     }];
 
     [self.textView layoutIfNeeded];
@@ -353,10 +351,59 @@ static CGFloat kYXChatBoxTextViewPadding = 10.0f;
         _recordButton.layer.cornerRadius = 1.5f;
         _recordButton.layer.borderWidth = 0.5f;
         _recordButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        
+
         _recordButton.hidden = YES;
+
+        [_recordButton addTarget:self action:@selector(onRecordButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
+        [_recordButton addTarget:self action:@selector(onRecordButtonTouchDragInside:) forControlEvents:UIControlEventTouchDragInside];
+        [_recordButton addTarget:self action:@selector(onRecordButtonTouchDragOutside:) forControlEvents:UIControlEventTouchDragOutside];
+//        [_recordButton addTarget:self action:@selector(onRecordButtonTouchDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
+//        [_recordButton addTarget:self action:@selector(onRecordButtonTouchDragExit:) forControlEvents:UIControlEventTouchDragExit];
+        [_recordButton addTarget:self action:@selector(onRecordButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+        [_recordButton addTarget:self action:@selector(onRecordButtonTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
+        [_recordButton addTarget:self action:@selector(onRecordButtonTouchCancel:) forControlEvents:UIControlEventTouchCancel];
     }
     return _recordButton;
+}
+
+- (void)onRecordButtonTouchDown:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragInside:(id)sender
+{
+    NSLog(@"手指上滑 取消发送 %@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragOutside:(id)sender
+{
+    NSLog(@"松开手指 取消发送 %@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragEnter:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchDragExit:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchUpInside:(id)sender
+{
+    NSLog(@"录音完成 发送语音 %@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchUpOutside:(id)sender
+{
+    NSLog(@"录音取消 %@", NSStringFromSelector(_cmd));
+}
+
+- (void)onRecordButtonTouchCancel:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 @end

@@ -10,4 +10,8 @@
 
 @interface YXEmojiView : UIView
 
+@property(nonatomic, strong) UIPageControl *pageControl;
+@property(nonatomic, strong) UIScrollView *scrollView;
+@property(nonatomic, strong) UIButton *sendButton;
+
 @end
